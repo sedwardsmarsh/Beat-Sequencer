@@ -3,7 +3,7 @@ import Combine
 
 /// Coordinates the timer, audio player, and sequencer state
 /// Implements the main business logic for the beat sequencer
-class SequencerEngine {
+class SequencerEngine: ObservableObject {
     /// The sequencer state (published for UI binding)
     let state: SequencerState
 

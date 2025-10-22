@@ -25,3 +25,7 @@ A simple, performant beat sequencing iOS app built with Swift and SwiftUI.
 10-22-25 13:19 PDT
 - (🤖 claude-code) Implemented SequencerEngine class coordinating AudioPlayer, SequencerTimer, and SequencerState. The engine subscribes to timer beat events, queries the pattern for enabled instruments, triggers non-blocking audio playback, and advances beat position with automatic wrapping. Includes start/pause/reset methods and BPM update support.
 - (🤖 claude-code) Created SequencerEngineTests with 15 tests covering initialization, start/pause/reset lifecycle, BPM updates, beat advancement with wrapping, audio playback integration, pattern modification during playback, pause/resume behavior, and cleanup on deinitialization.
+
+10-22-25 13:28 PDT
+- (🤖 claude-code) Implemented complete UI layer with three SwiftUI views. ControlPanelView provides play/pause buttons with state-based styling and BPM text field with validation. SequencerGridView displays 4x16 grid of beat buttons with toggle functionality, current position highlighting, and instrument labels. ContentView owns SequencerEngine as StateObject and composes child views with proper state binding.
+- (🤖 claude-code) Added SwiftUI previews for all three views. ControlPanelView preview creates sample engine and state. SequencerGridView preview includes preset beat pattern (kick on downbeats, snare on backbeats, hihat on offbeats) with current position highlighting at beat 4. ContentView preview uses default initialization.

@@ -7,13 +7,40 @@
 
 import SwiftUI
 
+/// Main view for the beat sequencer application
+/// Owns the sequencer engine and displays control panel and grid
 struct ContentView: View {
+    /// The sequencer engine that coordinates all components
+    @StateObject private var engine: SequencerEngine
+
+    /// Initializes the content view and creates the sequencer engine
+    init() {
+        // Create the engine (using _StateObject for proper initialization)
+        // If engine creation fails, the app will crash with descriptive error
+        _engine = StateObject(wrappedValue: {
+            do {
+                return try SequencerEngine()
+            } catch {
+                fatalError("Failed to initialize SequencerEngine: \(error)")
+            }
+        }())
+    }
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        VStack(spacing: 20) {
+            // Title
+            Text("Beat Sequencer")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .padding(.top)
+
+            // Control panel (play, pause, BPM)
+            ControlPanelView(engine: engine, state: engine.state)
+
+            // Sequencer grid (beat buttons)
+            SequencerGridView(state: engine.state)
+
+            Spacer()
         }
         .padding()
     }

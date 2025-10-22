@@ -33,3 +33,7 @@ Remove the bundle argument from AudioPlayer initialization
 - including this prompt, From now on, when making entries to PROMPTS.md, add a new entry "-" per prompt from me. Multiline prompts should be contained on the same entry "-". Regarding the current implementation. The tests pass and implementation is maintainable. Moving forward, proceed to implement the SequencerEngine with corresponding tests, then wait for me to review the changes
 
 - commit the changes for AudioPlayer, SequenceTimer and SequenceEngine to git history. Then proceed to final TODO, implement UI views.
+
+- create #Previews for @Beat-Sequencer/Views/ControlPanelView.swift and @Beat-Sequencer/Views/SequencerGridView.swift and @Beat-Sequencer/ContentView.swift. Add the necessary state definitions inside the #Preview block to construct each previewed component.
+
+- commit these changes to git history
