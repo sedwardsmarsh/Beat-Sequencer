@@ -14,40 +14,30 @@ struct ControlPanelView: View {
 
     var body: some View {
         HStack(spacing: 20) {
-            // Play button
+            // Play/Pause toggle button
             Button(action: {
-                // Start playback
-                engine.start()
+                // Toggle playback state
+                if state.isPlaying {
+                    engine.pause()
+                } else {
+                    engine.start()
+                }
             }) {
-                // Label with play icon and text
-                Label("Play", systemImage: "play.fill")
-                    .padding()
-                    .background(state.isPlaying ? Color.green.opacity(0.3) : Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+                // Label with dynamic icon and text based on state
+                Label(
+                    state.isPlaying ? "Pause" : "Play",
+                    systemImage: state.isPlaying ? "pause.fill" : "play.fill"
+                )
+                .padding()
+                .background(state.isPlaying ? Color.red : Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(8)
             }
-            // Disable if already playing
-            .disabled(state.isPlaying)
 
-            // Pause button
-            Button(action: {
-                // Pause playback
-                engine.pause()
-            }) {
-                // Label with pause icon and text
-                Label("Pause", systemImage: "pause.fill")
-                    .padding()
-                    .background(state.isPlaying ? Color.red : Color.gray.opacity(0.3))
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-            }
-            // Disable if not playing
-            .disabled(!state.isPlaying)
-
-            // BPM text field
-            HStack {
+            // BPM controls in vertical stack
+            VStack(spacing: 8) {
                 // Label for BPM
-                Text("BPM:")
+                Text("BPM")
                     .font(.headline)
 
                 // Text field for entering BPM
@@ -55,6 +45,7 @@ struct ControlPanelView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: 80)
                     .keyboardType(.numberPad)
+                    .multilineTextAlignment(.center)
                     // Update engine when user commits (presses return)
                     .onSubmit {
                         updateBPM()

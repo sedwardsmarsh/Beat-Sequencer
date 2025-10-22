@@ -79,26 +79,24 @@ struct BeatButton: View {
 
 #Preview {
     // Create a sample state for preview
-    let state = SequencerState(beatCount: 16, initialBPM: 120.0)
+    let state = SequencerState(beatCount: 8, initialBPM: 120.0)
 
     // Enable some sample beats to show the UI pattern
     state.toggleBeat(instrument: .kick, at: 0)
     state.toggleBeat(instrument: .kick, at: 4)
-    state.toggleBeat(instrument: .kick, at: 8)
-    state.toggleBeat(instrument: .kick, at: 12)
 
-    state.toggleBeat(instrument: .snare, at: 4)
-    state.toggleBeat(instrument: .snare, at: 12)
+    state.toggleBeat(instrument: .snare, at: 2)
+    state.toggleBeat(instrument: .snare, at: 6)
 
-    state.toggleBeat(instrument: .hihat, at: 2)
-    state.toggleBeat(instrument: .hihat, at: 6)
-    state.toggleBeat(instrument: .hihat, at: 10)
-    state.toggleBeat(instrument: .hihat, at: 14)
+    state.toggleBeat(instrument: .hihat, at: 1)
+    state.toggleBeat(instrument: .hihat, at: 3)
+    state.toggleBeat(instrument: .hihat, at: 5)
+    state.toggleBeat(instrument: .hihat, at: 7)
 
-    state.toggleBeat(instrument: .clap, at: 8)
+    state.toggleBeat(instrument: .clap, at: 4)
 
     // Set current position to show highlighting
-    state.currentBeatPosition = 4
+    state.currentBeatPosition = 2
 
     return SequencerGridView(state: state)
 }

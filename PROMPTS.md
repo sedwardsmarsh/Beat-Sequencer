@@ -37,3 +37,5 @@ Remove the bundle argument from AudioPlayer initialization
 - create #Previews for @Beat-Sequencer/Views/ControlPanelView.swift and @Beat-Sequencer/Views/SequencerGridView.swift and @Beat-Sequencer/ContentView.swift. Add the necessary state definitions inside the #Preview block to construct each previewed component.
 
 - commit these changes to git history
+
+- Necessary changes are required to bring the app to a better state: 1. Reduce the sequence grid to 8 beat events wide. The current implementation runs off the right side of the screen. 2. Combine the Play and Pause buttons to a single button which updates its icon and text depending on the app running state. 3. Display BPM above the text entry box and move the set button beneath the text entry box.

@@ -18,9 +18,9 @@ class SequencerState: ObservableObject {
 
     /// Initializes a new sequencer state
     /// - Parameters:
-    ///   - beatCount: Number of beats in the pattern (default: 16)
+    ///   - beatCount: Number of beats in the pattern (default: 8)
     ///   - initialBPM: Starting tempo (default: 120.0)
-    init(beatCount: Int = 16, initialBPM: Double = 120.0) {
+    init(beatCount: Int = 8, initialBPM: Double = 120.0) {
         self.beatPattern = BeatPattern(beatCount: beatCount)
         self.bpm = initialBPM
     }

@@ -9,7 +9,7 @@ struct BeatPattern {
     /// pattern[instrument][beatPosition] = enabled/disabled
     private(set) var pattern: [[Bool]]
 
-    /// Number of beat positions in the sequence (default: 16)
+    /// Number of beat positions in the sequence (default: 8)
     let beatCount: Int
 
     /// Number of instruments (default: 4)
@@ -17,9 +17,9 @@ struct BeatPattern {
 
     /// Initializes a new beat pattern with all beats disabled
     /// - Parameters:
-    ///   - beatCount: Number of beat positions (default: 16 for 4 bars of 4/4 time)
+    ///   - beatCount: Number of beat positions (default: 8 for 2 bars of 4/4 time)
     ///   - instrumentCount: Number of instruments (default: 4)
-    init(beatCount: Int = 16, instrumentCount: Int = 4) {
+    init(beatCount: Int = 8, instrumentCount: Int = 4) {
         self.beatCount = beatCount
         self.instrumentCount = instrumentCount
         // Initialize all beats as disabled (false)

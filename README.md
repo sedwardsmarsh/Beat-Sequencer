@@ -29,3 +29,7 @@ A simple, performant beat sequencing iOS app built with Swift and SwiftUI.
 10-22-25 13:28 PDT
 - (🤖 claude-code) Implemented complete UI layer with three SwiftUI views. ControlPanelView provides play/pause buttons with state-based styling and BPM text field with validation. SequencerGridView displays 4x16 grid of beat buttons with toggle functionality, current position highlighting, and instrument labels. ContentView owns SequencerEngine as StateObject and composes child views with proper state binding.
 - (🤖 claude-code) Added SwiftUI previews for all three views. ControlPanelView preview creates sample engine and state. SequencerGridView preview includes preset beat pattern (kick on downbeats, snare on backbeats, hihat on offbeats) with current position highlighting at beat 4. ContentView preview uses default initialization.
+
+10-22-25 13:43 PDT
+- (🤖 claude-code) Refined UI layout for better usability. Reduced sequencer grid from 16 to 8 beats to fit screen width. Combined play/pause into single toggle button with dynamic icon and color (blue for play, red for pause). Reorganized BPM controls into vertical stack with label above textfield and set button below for clearer hierarchy.
+- (🤖 claude-code) Updated default beat count from 16 to 8 in BeatPattern and SequencerState. Modified ARCH.md to reflect 8 beats (2 bars of 4/4 time). Updated SequencerGridView preview with 8-beat pattern.
