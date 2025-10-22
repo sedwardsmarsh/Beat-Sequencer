@@ -27,18 +27,10 @@ struct InstrumentTests {
 
     /// Tests that each instrument has the correct audio file name
     @Test func testAudioFileNames() {
-        #expect(Instrument.kick.audioFileName == "(Lay Down) Blackout Kick.wav")
-        #expect(Instrument.clap.audioFileName == "dry-clap-12.wav")
-        #expect(Instrument.snare.audioFileName == "(Lay Down) Snare.wav")
-        #expect(Instrument.hihat.audioFileName == "(About You) Hat Closed.wav")
-    }
-
-    /// Tests that each instrument has the correct audio folder name
-    @Test func testAudioFolderNames() {
-        #expect(Instrument.kick.audioFolderName == "kick")
-        #expect(Instrument.clap.audioFolderName == "clap")
-        #expect(Instrument.snare.audioFolderName == "snare")
-        #expect(Instrument.hihat.audioFolderName == "hihat")
+        #expect(Instrument.kick.audioFileName == "kick.wav")
+        #expect(Instrument.clap.audioFileName == "clap.wav")
+        #expect(Instrument.snare.audioFileName == "snare.wav")
+        #expect(Instrument.hihat.audioFileName == "hihat.wav")
     }
 
     /// Tests that raw values are correct and sequential

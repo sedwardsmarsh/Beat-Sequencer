@@ -20,18 +20,13 @@ enum Instrument: Int, CaseIterable {
     }
 
     /// Returns the audio file name for the instrument
-    /// Maps to the actual audio file in the instrument-audio folder
+    /// Maps to the actual audio file in the bundle
     var audioFileName: String {
         switch self {
-        case .kick: return "(Lay Down) Blackout Kick.wav"
-        case .clap: return "dry-clap-12.wav"
-        case .snare: return "(Lay Down) Snare.wav"
-        case .hihat: return "(About You) Hat Closed.wav"
+        case .kick: return "kick.wav"
+        case .clap: return "clap.wav"
+        case .snare: return "snare.wav"
+        case .hihat: return "hihat.wav"
         }
-    }
-
-    /// Returns the subdirectory name in instrument-audio folder
-    var audioFolderName: String {
-        return displayName
     }
 }

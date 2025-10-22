@@ -8,10 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		2295313D2EA95B8E00248A53 /* SPEC.md in Resources */ = {isa = PBXBuildFile; fileRef = 2295313C2EA95B8E00248A53 /* SPEC.md */; };
-		229531472EA95D2400248A53 /* (Lay Down) Blackout Kick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 229531422EA95D2400248A53 /* (Lay Down) Blackout Kick.wav */; };
-		229531482EA95D2400248A53 /* (About You) Hat Closed.wav in Resources */ = {isa = PBXBuildFile; fileRef = 229531402EA95D2400248A53 /* (About You) Hat Closed.wav */; };
-		229531492EA95D2400248A53 /* (Lay Down) Snare.wav in Resources */ = {isa = PBXBuildFile; fileRef = 229531442EA95D2400248A53 /* (Lay Down) Snare.wav */; };
-		2295314A2EA95D2400248A53 /* dry-clap-12.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2295313E2EA95D2400248A53 /* dry-clap-12.wav */; };
+		22E21E1B2EA96CED0096EB40 /* clap.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E132EA96CED0096EB40 /* clap.wav */; };
+		22E21E1C2EA96CED0096EB40 /* hihat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E152EA96CED0096EB40 /* hihat.wav */; };
+		22E21E1D2EA96CED0096EB40 /* kick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E172EA96CED0096EB40 /* kick.wav */; };
+		22E21E1E2EA96CED0096EB40 /* snare.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E192EA96CED0096EB40 /* snare.wav */; };
+		22E21E1F2EA96CED0096EB40 /* clap.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E132EA96CED0096EB40 /* clap.wav */; };
+		22E21E202EA96CED0096EB40 /* hihat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E152EA96CED0096EB40 /* hihat.wav */; };
+		22E21E212EA96CED0096EB40 /* kick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E172EA96CED0096EB40 /* kick.wav */; };
+		22E21E222EA96CED0096EB40 /* snare.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E192EA96CED0096EB40 /* snare.wav */; };
+		22E21E232EA96CED0096EB40 /* clap.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E132EA96CED0096EB40 /* clap.wav */; };
+		22E21E242EA96CED0096EB40 /* hihat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E152EA96CED0096EB40 /* hihat.wav */; };
+		22E21E252EA96CED0096EB40 /* kick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E172EA96CED0096EB40 /* kick.wav */; };
+		22E21E262EA96CED0096EB40 /* snare.wav in Resources */ = {isa = PBXBuildFile; fileRef = 22E21E192EA96CED0096EB40 /* snare.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,10 +44,10 @@
 		2295311F2EA95B1A00248A53 /* Beat-SequencerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Beat-SequencerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		229531292EA95B1A00248A53 /* Beat-SequencerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Beat-SequencerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2295313C2EA95B8E00248A53 /* SPEC.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = SPEC.md; sourceTree = "<group>"; };
-		2295313E2EA95D2400248A53 /* dry-clap-12.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "dry-clap-12.wav"; sourceTree = "<group>"; };
-		229531402EA95D2400248A53 /* (About You) Hat Closed.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "(About You) Hat Closed.wav"; sourceTree = "<group>"; };
-		229531422EA95D2400248A53 /* (Lay Down) Blackout Kick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "(Lay Down) Blackout Kick.wav"; sourceTree = "<group>"; };
-		229531442EA95D2400248A53 /* (Lay Down) Snare.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "(Lay Down) Snare.wav"; sourceTree = "<group>"; };
+		22E21E132EA96CED0096EB40 /* clap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = clap.wav; sourceTree = "<group>"; };
+		22E21E152EA96CED0096EB40 /* hihat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hihat.wav; sourceTree = "<group>"; };
+		22E21E172EA96CED0096EB40 /* kick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = kick.wav; sourceTree = "<group>"; };
+		22E21E192EA96CED0096EB40 /* snare.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snare.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -88,12 +96,15 @@
 		229531092EA95B1900248A53 = {
 			isa = PBXGroup;
 			children = (
-				229531462EA95D2400248A53 /* instrument-audio */,
 				2295313C2EA95B8E00248A53 /* SPEC.md */,
 				229531142EA95B1900248A53 /* Beat-Sequencer */,
 				229531222EA95B1A00248A53 /* Beat-SequencerTests */,
 				2295312C2EA95B1A00248A53 /* Beat-SequencerUITests */,
 				229531132EA95B1900248A53 /* Products */,
+				22E21E152EA96CED0096EB40 /* hihat.wav */,
+				22E21E132EA96CED0096EB40 /* clap.wav */,
+				22E21E172EA96CED0096EB40 /* kick.wav */,
+				22E21E192EA96CED0096EB40 /* snare.wav */,
 			);
 			sourceTree = "<group>";
 		};
@@ -105,49 +116,6 @@
 				229531292EA95B1A00248A53 /* Beat-SequencerUITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		2295313F2EA95D2400248A53 /* clap */ = {
-			isa = PBXGroup;
-			children = (
-				2295313E2EA95D2400248A53 /* dry-clap-12.wav */,
-			);
-			path = clap;
-			sourceTree = "<group>";
-		};
-		229531412EA95D2400248A53 /* hihat */ = {
-			isa = PBXGroup;
-			children = (
-				229531402EA95D2400248A53 /* (About You) Hat Closed.wav */,
-			);
-			path = hihat;
-			sourceTree = "<group>";
-		};
-		229531432EA95D2400248A53 /* kick */ = {
-			isa = PBXGroup;
-			children = (
-				229531422EA95D2400248A53 /* (Lay Down) Blackout Kick.wav */,
-			);
-			path = kick;
-			sourceTree = "<group>";
-		};
-		229531452EA95D2400248A53 /* snare */ = {
-			isa = PBXGroup;
-			children = (
-				229531442EA95D2400248A53 /* (Lay Down) Snare.wav */,
-			);
-			path = snare;
-			sourceTree = "<group>";
-		};
-		229531462EA95D2400248A53 /* instrument-audio */ = {
-			isa = PBXGroup;
-			children = (
-				2295313F2EA95D2400248A53 /* clap */,
-				229531412EA95D2400248A53 /* hihat */,
-				229531432EA95D2400248A53 /* kick */,
-				229531452EA95D2400248A53 /* snare */,
-			);
-			path = "instrument-audio";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -270,10 +238,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				229531472EA95D2400248A53 /* (Lay Down) Blackout Kick.wav in Resources */,
-				229531482EA95D2400248A53 /* (About You) Hat Closed.wav in Resources */,
-				229531492EA95D2400248A53 /* (Lay Down) Snare.wav in Resources */,
-				2295314A2EA95D2400248A53 /* dry-clap-12.wav in Resources */,
+				22E21E1F2EA96CED0096EB40 /* clap.wav in Resources */,
+				22E21E202EA96CED0096EB40 /* hihat.wav in Resources */,
+				22E21E212EA96CED0096EB40 /* kick.wav in Resources */,
+				22E21E222EA96CED0096EB40 /* snare.wav in Resources */,
 				2295313D2EA95B8E00248A53 /* SPEC.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,6 +250,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22E21E232EA96CED0096EB40 /* clap.wav in Resources */,
+				22E21E242EA96CED0096EB40 /* hihat.wav in Resources */,
+				22E21E252EA96CED0096EB40 /* kick.wav in Resources */,
+				22E21E262EA96CED0096EB40 /* snare.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +261,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22E21E1B2EA96CED0096EB40 /* clap.wav in Resources */,
+				22E21E1C2EA96CED0096EB40 /* hihat.wav in Resources */,
+				22E21E1D2EA96CED0096EB40 /* kick.wav in Resources */,
+				22E21E1E2EA96CED0096EB40 /* snare.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
