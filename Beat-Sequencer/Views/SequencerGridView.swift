@@ -13,9 +13,9 @@ struct SequencerGridView: View {
                 // Each row contains instrument label and beat buttons
                 HStack(spacing: 8) {
                     // Instrument label
-                    Text(instrument.displayName)
-                        .font(.headline)
-                        .frame(width: 60, alignment: .leading)
+//                    Text(instrument.displayName)
+//                        .font(.headline)
+//                        .frame(width: 60, alignment: .leading)
 
                     // Beat buttons for this instrument
                     ForEach(0..<state.beatPattern.beatCount, id: \.self) { beatPosition in
@@ -25,6 +25,7 @@ struct SequencerGridView: View {
                             beatPosition: beatPosition,
                             state: state
                         )
+//                        .offset(x: -20)
                     }
                 }
             }
