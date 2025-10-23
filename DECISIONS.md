@@ -1,5 +1,8 @@
 # Summary of Decisions
 
+- 10-23-25 15:49 PST
+  - Another issue I noticed is that updating BPM while the app is running causes glitches in the audio playback.
+
 - 10-23-25 12:09 PST
   - Shifting focus to improving existing issues as mentioned in [README](./README.md#todo) on 10-22-25:
       - Audio playback continues after stopping sequencer for higher BPMs (>= 200)
