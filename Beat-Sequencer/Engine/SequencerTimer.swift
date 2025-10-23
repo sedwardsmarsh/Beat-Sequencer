@@ -31,11 +31,14 @@ class SequencerTimer {
         // Calculate the interval between beats in seconds
         // interval = 60 seconds / beats per minute
         let interval = 60.0 / bpm
+        
+        // Set the timing interval to be 10ms.
+        let tolerance_S: TimeInterval? = 0.01
 
         // Create a timer publisher that fires at the calculated interval
         // RunLoop.main ensures timer fires on the main thread
         // .autoconnect() starts the timer immediately
-        let publisher = Timer.publish(every: interval, on: .main, in: .common)
+        let publisher = Timer.publish(every: interval, tolerance: tolerance_S, on: .main, in: .common)
             .autoconnect()
             .eraseToAnyPublisher()
 
