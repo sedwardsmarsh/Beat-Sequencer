@@ -1,11 +1,9 @@
 # Beat Sequencer
 
-A simple, ~~performant~~ beat sequencing iOS app built with Swift and SwiftUI.
+A beat sequencing iOS app built with Swift and SwiftUI.
 
 ## TODO
 
-- BPM sequencer fails at higher BPMs (>= 200)
-- Audio playback continues after stopping sequencer for higher BPMs (>= 200)
 - Improve accessibility via dark mode to prevent blinding user
 - Add random sequence button to create a "random-not-random" sequence from a pre loaded library of sequences
 - Add drop-down menus per instrument category to allow user to change sounds for each instrument
