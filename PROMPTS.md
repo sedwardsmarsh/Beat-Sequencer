@@ -39,3 +39,7 @@ Remove the bundle argument from AudioPlayer initialization
 - commit these changes to git history
 
 - Necessary changes are required to bring the app to a better state: 1. Reduce the sequence grid to 8 beat events wide. The current implementation runs off the right side of the screen. 2. Combine the Play and Pause buttons to a single button which updates its icon and text depending on the app running state. 3. Display BPM above the text entry box and move the set button beneath the text entry box.
+
+- Load @PROMPTS.md for reference: As requested previously in this project, save user input into PROMPTS.md. Save this prompt into PROMPTS. 1. Based on the change made in c8d1f5f, add test coverage for SequencerTimer.start(). Specifically, add coverage for lines 35 to 43. 2. Before commiting changes to Git, pause to let me review your work. 3. After I approve your work, commit the changes to git.
+
+- I will perform the test myself, pause now to wait for my code approval of your code. mark 2nd TODO item as complete. update @PROMPTS.md
