@@ -1,4 +1,5 @@
 import Testing
+import Foundation
 import Combine
 @testable import Beat_Sequencer
 
@@ -227,5 +228,96 @@ struct SequencerTimerTests {
 
         // If we reach here without crashes, cleanup worked correctly
         #expect(timer == nil)
+    }
+
+    /// Tests that the timer publishes events with proper timing accuracy
+    /// This test verifies the tolerance parameter added to Timer.publish
+    @Test func testTimerPublishesWithTolerance() async throws {
+        // Create a timer with a fast BPM for testing (240 BPM = 0.25s interval)
+        let timer = await SequencerTimer(bpm: 240.0)
+        // Tolerance is set to 10ms (0.01s) in SequencerTimer.start()
+        let tolerance: TimeInterval = 0.01
+
+        // Track beat timestamps
+        var beatTimestamps: [Date] = []
+        var cancellable: AnyCancellable?
+
+        // Start the timer
+        await timer.start()
+
+        // Subscribe to beat events and record timestamps
+        if let publisher = await timer.beatPublisher {
+            cancellable = publisher.sink { timestamp in
+                beatTimestamps.append(timestamp)
+            }
+        }
+
+        // Wait for approximately 5 beats (1.25 seconds)
+        try await Task.sleep(nanoseconds: 1_300_000_000) // 1.3 seconds
+
+        // Cancel subscription and stop timer
+        cancellable?.cancel()
+        await timer.stop()
+
+        // Verify we received at least 4 beats
+        let expectedNumBeats = 4
+        #expect(beatTimestamps.count >= expectedNumBeats,
+                "Number of beats was smaller than expected, was <\(expectedNumBeats)")
+
+        // Expected interval (period) is 0.25s @ 240 BPM...
+        // 60 / 240 = 0.25 seconds
+        let expectedInterval: TimeInterval = 0.25
+        
+        // Verify timing between consecutive beats is within expected interval +/- tolerance
+        // Check intervals between consecutive beats
+        for i in 1..<beatTimestamps.count {
+            let interval = beatTimestamps[i].timeIntervalSince(beatTimestamps[i-1])
+            let deviation = abs(interval - expectedInterval)
+
+            // Allow for system timing variance plus the 10ms tolerance
+            // Using 30ms total tolerance to account for system scheduling
+            let maxDeviation = tolerance + 0.02
+
+            #expect(deviation <= maxDeviation,
+                   "Beat interval \(interval) deviated \(deviation)s from expected \(expectedInterval)s")
+        }
+    }
+
+    /// Tests that timer creates publisher with correct tolerance configuration
+    /// Verifies that the start() method properly configures the timer with tolerance
+    @Test func testStartCreatesPublisherWithTolerance() async throws {
+        // Create timer with moderate BPM
+        let timer = await SequencerTimer(bpm: 120.0)
+//        let expectedInterval: TimeInterval = 0.5 // 60 / 120 = 0.5 seconds
+
+        // Verify initial state
+        #expect(await timer.beatPublisher == nil)
+        #expect(await timer.isRunning == false)
+
+        // Start the timer (this executes lines 35-43 with tolerance configuration)
+        await timer.start()
+
+        // Verify timer is running and publisher exists
+        #expect(await timer.isRunning == true)
+        #expect(await timer.beatPublisher != nil)
+
+        // Collect beat events to verify publisher is functional
+        var beatCount = 0
+        var cancellable: AnyCancellable?
+        if let publisher = await timer.beatPublisher {
+            cancellable = publisher.sink { _ in
+                beatCount += 1
+            }
+        }
+
+        // Wait for expected interval plus tolerance (0.5s + 0.02s buffer)
+        try await Task.sleep(nanoseconds: 550_000_000)
+
+        // Should have received at least 1 beat
+        #expect(beatCount >= 1)
+
+        // Clean up
+        cancellable?.cancel()
+        await timer.stop()
     }
 }

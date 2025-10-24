@@ -12,7 +12,7 @@ struct SequencerStateTests {
         #expect(state.isPlaying == false)
         #expect(state.currentBeatPosition == 0)
         #expect(state.bpm == 120.0)
-        #expect(state.beatPattern.beatCount == 16)
+        #expect(state.beatPattern.beatCount == 8)
     }
 
     /// Tests initialization with custom values
@@ -45,10 +45,10 @@ struct SequencerStateTests {
         let state = SequencerState()
 
         // Advance to the last position (15 for 16-beat pattern)
-        for _ in 0..<15 {
+        for _ in 0..<7 {
             state.advanceBeat()
         }
-        #expect(state.currentBeatPosition == 15)
+        #expect(state.currentBeatPosition == 7)
 
         // Advance once more should wrap to 0
         state.advanceBeat()
@@ -60,10 +60,11 @@ struct SequencerStateTests {
         let state = SequencerState()
 
         // Advance to middle of sequence
-        for _ in 0..<8 {
+        let middleOfSequence = Int(state.beatPattern.beatCount/2)
+        for _ in 0..<middleOfSequence {
             state.advanceBeat()
         }
-        #expect(state.currentBeatPosition == 8)
+        #expect(state.currentBeatPosition == middleOfSequence)
 
         // Reset should return to 0
         state.resetPosition()

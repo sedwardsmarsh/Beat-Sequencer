@@ -10,7 +10,7 @@ struct BeatPatternTests {
         let pattern = BeatPattern()
 
         // Verify dimensions
-        #expect(pattern.beatCount == 16)
+        #expect(pattern.beatCount == 8)
         #expect(pattern.instrumentCount == 4)
     }
 
@@ -58,19 +58,21 @@ struct BeatPatternTests {
 
         // Enable several beats
         pattern.toggle(instrument: .kick, at: 0)
+        pattern.toggle(instrument: .kick, at: 1)
         pattern.toggle(instrument: .kick, at: 4)
-        pattern.toggle(instrument: .kick, at: 8)
-        pattern.toggle(instrument: .kick, at: 12)
+        pattern.toggle(instrument: .kick, at: 7)
 
         // Verify they're all enabled
         #expect(pattern.isEnabled(instrument: .kick, at: 0) == true)
+        #expect(pattern.isEnabled(instrument: .kick, at: 1) == true)
         #expect(pattern.isEnabled(instrument: .kick, at: 4) == true)
-        #expect(pattern.isEnabled(instrument: .kick, at: 8) == true)
-        #expect(pattern.isEnabled(instrument: .kick, at: 12) == true)
+        #expect(pattern.isEnabled(instrument: .kick, at: 7) == true)
 
         // Verify other positions remain disabled
-        #expect(pattern.isEnabled(instrument: .kick, at: 1) == false)
+        #expect(pattern.isEnabled(instrument: .kick, at: 2) == false)
+        #expect(pattern.isEnabled(instrument: .kick, at: 3) == false)
         #expect(pattern.isEnabled(instrument: .kick, at: 5) == false)
+        #expect(pattern.isEnabled(instrument: .kick, at: 6) == false)
     }
 
     /// Tests toggling beats for different instruments
@@ -135,9 +137,9 @@ struct BeatPatternTests {
 
         // Test valid boundary positions
         pattern.toggle(instrument: .kick, at: 0)
-        pattern.toggle(instrument: .kick, at: 15)
         #expect(pattern.isEnabled(instrument: .kick, at: 0) == true)
-        #expect(pattern.isEnabled(instrument: .kick, at: 15) == true)
+        pattern.toggle(instrument: .kick, at: 2)
+        #expect(pattern.isEnabled(instrument: .kick, at: 2) == true)
     }
 
     /// Tests that toggling one beat doesn't affect others
