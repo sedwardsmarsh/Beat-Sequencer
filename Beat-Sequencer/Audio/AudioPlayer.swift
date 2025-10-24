@@ -117,11 +117,15 @@ class AudioPlayer {
               let buffer = audioBuffers[instrument] else {
             return
         }
+        
+        // Define the playback options
+        // Enable the buffer to interrupt the same instrument in its audio node
+        let options: AVAudioPlayerNodeBufferOptions = .interrupts
 
         // Schedule the buffer for immediate playback
         // The buffer plays from the beginning and completes automatically
         // Using nil for options allows the buffer to play without waiting
-        playerNode.scheduleBuffer(buffer, at: nil, options: [], completionHandler: nil)
+        playerNode.scheduleBuffer(buffer, at: nil, options: options, completionHandler: nil)
     }
 
     /// Stops the audio engine and all playback
