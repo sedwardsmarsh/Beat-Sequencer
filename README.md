@@ -4,6 +4,7 @@ A beat sequencing iOS app built with Swift and SwiftUI.
 
 ## TODO
 
+- Fix bug preventing BPM from changing when sequencer is running
 - Improve accessibility via dark mode to prevent blinding user
 - Add random sequence button to create a "random-not-random" sequence from a pre loaded library of sequences
 - Add drop-down menus per instrument category to allow user to change sounds for each instrument
