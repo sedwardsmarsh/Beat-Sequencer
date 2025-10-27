@@ -9,8 +9,11 @@ struct ControlPanelView: View {
     /// The sequencer state (observed for UI updates)
     @ObservedObject var state: SequencerState
 
-    /// Local BPM text field value
-    @State private var bpmText: String = ""
+    /// BPM value
+    @State private var bpmStepper: Int = 120
+    private let bpmStep = 1
+    private let bpmMin = 1
+    private let bpmMax = 400
 
     var body: some View {
         HStack(spacing: 20) {
@@ -28,59 +31,44 @@ struct ControlPanelView: View {
                     state.isPlaying ? "Pause" : "Play",
                     systemImage: state.isPlaying ? "pause.fill" : "play.fill"
                 )
+                .frame(width:80)
                 .padding()
                 .background(state.isPlaying ? Color.red : Color.blue)
                 .foregroundColor(.white)
                 .cornerRadius(8)
             }
-
-            // BPM controls in vertical stack
-            VStack(spacing: 8) {
-                // Label for BPM
-                Text("BPM")
-                    .font(.headline)
-
-                // Text field for entering BPM
-                TextField("120", text: $bpmText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 80)
-                    .keyboardType(.numberPad)
-                    .multilineTextAlignment(.center)
-                    // Update engine when user commits (presses return)
-                    .onSubmit {
-                        updateBPM()
-                    }
-                    // Initialize with current BPM on appear
-                    .onAppear {
-                        bpmText = String(format: "%.0f", state.bpm)
-                    }
-                    // Update text when state BPM changes
-                    .onChange(of: state.bpm) { oldValue, newValue in
-                        bpmText = String(format: "%.0f", newValue)
-                    }
-
-                // Button to apply BPM change
-                Button("Set") {
-                    updateBPM()
-                }
-                .buttonStyle(.bordered)
-            }
+            
+            bpmStepperControl
+            
         }
         .padding()
         .background(Color.gray.opacity(0.1))
         .cornerRadius(12)
     }
-
-    /// Updates the BPM from the text field
-    private func updateBPM() {
-        // Parse the BPM from text
-        if let newBPM = Double(bpmText) {
-            // Update the engine with new BPM
-            engine.updateBPM(newBPM)
-        } else {
-            // Reset to current BPM if invalid
-            bpmText = String(format: "%.0f", state.bpm)
+    
+    /// View for the BPM stepper control
+    var bpmStepperControl: some View {
+        VStack(spacing: 8) {
+            // Label for BPM
+            Text("BPM")
+                .font(.system(size: 30, weight: .medium))
+            
+            // BPM stepper control
+            Stepper(
+                "\(bpmStepper)",
+                value: $bpmStepper,
+                in: bpmMin...bpmMax,
+                step: bpmStep
+            )
+            .font(.system(size: 20, weight: .bold))
+            .frame(width: 140)
+            .padding(5)
+            .onChange(of: bpmStepper) {
+                engine.updateBPM(Double(bpmStepper))
+            }
         }
+        .background(.gray.opacity(0.1))
+        .cornerRadius(12)
     }
 }
 
