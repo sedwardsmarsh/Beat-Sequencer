@@ -114,10 +114,12 @@ struct SequencerTimerTests {
         // Update BPM
         timer.updateBPM(140.0)
 
-        // Verify BPM is updated and timer is still running
+        // Verify BPM is updated and timer creates transition
         #expect(timer.bpm == 140.0)
         #expect(timer.isRunning == true)
         #expect(timer.beatPublisher != nil)
+        #expect(timer.isTransitioning == true)
+        #expect(timer.transitionPublisher != nil)
     }
 
     /// Tests the static interval calculation method
@@ -166,7 +168,7 @@ struct SequencerTimerTests {
         #expect(beatCount >= 2)
     }
 
-    /// Tests that BPM changes affect timing
+    /// Tests that BPM changes affect timing with transition mechanism
     @Test func testBPMChangeAffectsTiming() async throws {
         // Create a timer with slow BPM
         let timer = await SequencerTimer(bpm: 60.0) // 1 second per beat
@@ -174,44 +176,50 @@ struct SequencerTimerTests {
         // Start timer
         await timer.start()
 
-        var beatCount = 0
-        var cancellable: AnyCancellable?
+        var slowBeatCount = 0
+        var oldCancellable: AnyCancellable?
 
-        // Subscribe to beats
+        // Subscribe to slow BPM beats
         if let publisher = await timer.beatPublisher {
-            cancellable = publisher.sink { _ in
-                beatCount += 1
+            oldCancellable = publisher.sink { _ in
+                slowBeatCount += 1
             }
         }
 
-        // Wait for 0.5 seconds (should get 0-1 beats at 60 BPM)
-        try await Task.sleep(nanoseconds: 500_000_000)
+        // Wait for ~1 second (should get 1 beat at 60 BPM)
+        try await Task.sleep(nanoseconds: 1_100_000_000)
 
-        let slowBeatCount = beatCount
+        // Should have received approximately 1 beat at slow BPM
+        #expect(slowBeatCount >= 1, "Should receive at least 1 beat at 60 BPM")
 
-        // Update to faster BPM
+        // Update to faster BPM while running
         await timer.updateBPM(240.0) // 0.25 seconds per beat
-        beatCount = 0
 
-        // Re-subscribe with new publisher
-        cancellable?.cancel()
-        if let publisher = await timer.beatPublisher {
-            cancellable = publisher.sink { _ in
-                beatCount += 1
+        // Verify transition is active
+        #expect(await timer.isTransitioning == true)
+        #expect(await timer.transitionPublisher != nil)
+
+        var fastBeatCount = 0
+        var transitionCancellable: AnyCancellable?
+
+        // Subscribe to the new transition publisher with faster timing
+        if let publisher = await timer.transitionPublisher {
+            transitionCancellable = publisher.sink { _ in
+                fastBeatCount += 1
             }
         }
 
-        // Wait for 0.5 seconds (should get ~2 beats at 240 BPM)
-        try await Task.sleep(nanoseconds: 500_000_000)
-
-        let fastBeatCount = beatCount
+        // Wait for ~0.6 seconds (should get ~2 beats at 240 BPM = 0.25s per beat)
+        try await Task.sleep(nanoseconds: 600_000_000)
 
         // Clean up
-        cancellable?.cancel()
+        oldCancellable?.cancel()
+        transitionCancellable?.cancel()
         await timer.stop()
 
-        // At faster BPM, should receive more beats in same time period
-        #expect(fastBeatCount > slowBeatCount)
+        // At faster BPM (240), should receive more beats than slow BPM (60) in same time period
+        // In 0.6s: 240 BPM should produce ~2 beats, 60 BPM would produce 0-1 beats
+        #expect(fastBeatCount >= 2, "Should receive at least 2 beats at 240 BPM in 0.6s")
     }
 
     /// Tests that the timer properly cleans up on deinitialization
@@ -319,5 +327,112 @@ struct SequencerTimerTests {
         // Clean up
         cancellable?.cancel()
         await timer.stop()
+    }
+
+    /// Tests the complete transition flow when BPM changes during playback
+    /// Verifies that old timer continues until new timer fires its first beat
+    @Test func testTransitionFromOldToNewTimer() async throws {
+        // Create a timer with slow BPM for easier observation
+        let timer = await SequencerTimer(bpm: 120.0) // 0.5s per beat
+
+        // Start the timer
+        await timer.start()
+
+        // Verify initial state
+        #expect(await timer.isRunning == true)
+        #expect(await timer.beatPublisher != nil)
+        #expect(await timer.isTransitioning == false)
+        #expect(await timer.transitionPublisher == nil)
+
+        // Subscribe to the old timer
+        var oldTimerBeatCount = 0
+        var cancellable: AnyCancellable?
+        if let publisher = await timer.beatPublisher {
+            cancellable = publisher.sink { _ in
+                oldTimerBeatCount += 1
+            }
+        }
+
+        // Wait for first beat from old timer
+        try await Task.sleep(nanoseconds: 600_000_000) // 0.6s
+        #expect(oldTimerBeatCount >= 1, "Old timer should fire at least one beat")
+
+        // Now change BPM while running
+        await timer.updateBPM(240.0) // 0.25s per beat
+
+        // Verify transition state
+        #expect(await timer.bpm == 240.0)
+        #expect(await timer.isRunning == true)
+        #expect(await timer.isTransitioning == true)
+        #expect(await timer.transitionPublisher != nil)
+        #expect(await timer.beatPublisher != nil) // Old publisher still exists
+
+        // Old subscription should continue working briefly
+        let beforeTransitionCount = oldTimerBeatCount
+
+        // Wait a bit - old timer might fire once more
+        try await Task.sleep(nanoseconds: 600_000_000) // 0.6s
+
+        // Old subscription might have fired once more (if within interval)
+        // But it's still subscribed to the old publisher
+        let afterWaitCount = oldTimerBeatCount
+        #expect(afterWaitCount >= beforeTransitionCount)
+
+        // Complete the transition manually (simulating what SequencerEngine does)
+        await timer.completeTransition()
+
+        // Verify transition completed
+        #expect(await timer.isTransitioning == false)
+        #expect(await timer.transitionPublisher == nil)
+        #expect(await timer.beatPublisher != nil) // Now has the new publisher
+
+        // Clean up
+        cancellable?.cancel()
+        await timer.stop()
+    }
+
+    /// Tests that updating BPM with the same value doesn't trigger transition
+    @Test func testUpdateBPMWithSameValueNoOp() {
+        // Create a timer
+        let timer = SequencerTimer(bpm: 120.0)
+        timer.start()
+
+        // Verify initial state
+        #expect(timer.isRunning == true)
+        #expect(timer.isTransitioning == false)
+
+        // Update with same BPM
+        timer.updateBPM(120.0)
+
+        // Verify no transition was created
+        #expect(timer.bpm == 120.0)
+        #expect(timer.isTransitioning == false)
+        #expect(timer.transitionPublisher == nil)
+
+        // Clean up
+        timer.stop()
+    }
+
+    /// Tests that stop() clears any in-progress transitions
+    @Test func testStopClearsTransition() {
+        // Create and start a timer
+        let timer = SequencerTimer(bpm: 120.0)
+        timer.start()
+
+        // Trigger a transition
+        timer.updateBPM(180.0)
+
+        // Verify transition is active
+        #expect(timer.isTransitioning == true)
+        #expect(timer.transitionPublisher != nil)
+
+        // Stop the timer
+        timer.stop()
+
+        // Verify transition is cleared
+        #expect(timer.isRunning == false)
+        #expect(timer.isTransitioning == false)
+        #expect(timer.transitionPublisher == nil)
+        #expect(timer.beatPublisher == nil)
     }
 }

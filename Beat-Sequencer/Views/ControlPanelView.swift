@@ -12,8 +12,8 @@ struct ControlPanelView: View {
     /// BPM value
     @State private var bpmStepper: Int = 120
     private let bpmStep = 1
-    private let bpmMin = 1
-    private let bpmMax = 400
+    private let bpmMin = 40  // Match SequencerState clamping range
+    private let bpmMax = 240  // Match SequencerState clamping range
 
     var body: some View {
         HStack(spacing: 20) {

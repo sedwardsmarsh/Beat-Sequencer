@@ -16,6 +16,9 @@ class SequencerEngine: ObservableObject {
     /// Subscription to timer beat events
     private var beatSubscription: AnyCancellable?
 
+    /// Subscription to transition timer events during BPM changes
+    private var transitionSubscription: AnyCancellable?
+
     /// Initializes the sequencer engine with required components
     /// - Parameters:
     ///   - state: The sequencer state (defaults to new instance)
@@ -55,27 +58,37 @@ class SequencerEngine: ObservableObject {
     }
 
     /// Pauses the sequencer playback
-    /// Stops the timer and cancels beat subscription
+    /// Stops the timer and cancels all subscriptions
     func pause() {
         // Mark state as not playing
         state.isPlaying = false
 
-        // Stop the timer
+        // Stop the timer (also clears any transitions)
         timer.stop()
 
         // Cancel beat subscription
         beatSubscription?.cancel()
         beatSubscription = nil
+
+        // Cancel transition subscription if exists
+        transitionSubscription?.cancel()
+        transitionSubscription = nil
     }
 
     /// Updates the BPM (tempo) of the sequencer
     /// - Parameter newBPM: The new beats per minute value
+    /// If the sequencer is playing, this will create a smooth transition to the new BPM
     func updateBPM(_ newBPM: Double) {
         // Update BPM in state
         state.updateBPM(newBPM)
 
-        // Update BPM in timer (will restart if running)
+        // Update BPM in timer (creates transition if running)
         timer.updateBPM(newBPM)
+
+        // If playing, subscribe to the transition timer
+        if state.isPlaying {
+            subscribeToTransition()
+        }
     }
 
     /// Subscribes to timer beat events and handles each beat
@@ -89,6 +102,43 @@ class SequencerEngine: ObservableObject {
         beatSubscription = publisher.sink { [weak self] _ in
             self?.handleBeat()
         }
+    }
+
+    /// Subscribes to the transition timer during BPM changes
+    /// On the first beat from the new timer, completes the transition and re-subscribes to beat events
+    private func subscribeToTransition() {
+        // Cancel any existing transition subscription
+        transitionSubscription?.cancel()
+
+        // Subscribe to the transition timer's publisher
+        guard let publisher = timer.transitionPublisher else { return }
+
+        transitionSubscription = publisher.sink { [weak self] _ in
+            guard let self = self else { return }
+
+            // On first event from new timer, complete the transition
+            self.timer.completeTransition()
+
+            // Re-subscribe to the new beat publisher
+            self.resubscribeToBeatEvents()
+
+            // Cancel transition subscription as it's no longer needed
+            self.transitionSubscription?.cancel()
+            self.transitionSubscription = nil
+
+            // Handle this beat normally
+            self.handleBeat()
+        }
+    }
+
+    /// Re-subscribes to beat events after a BPM transition
+    /// Cancels old subscription and establishes new one with updated timer
+    private func resubscribeToBeatEvents() {
+        // Cancel existing beat subscription
+        beatSubscription?.cancel()
+
+        // Re-subscribe to the updated beat publisher
+        subscribeToBeatEvents()
     }
 
     /// Handles a single beat event

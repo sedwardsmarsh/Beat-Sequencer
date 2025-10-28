@@ -43,3 +43,5 @@ Remove the bundle argument from AudioPlayer initialization
 - Load @PROMPTS.md for reference: As requested previously in this project, save user input into PROMPTS.md. Save this prompt into PROMPTS. 1. Based on the change made in c8d1f5f, add test coverage for SequencerTimer.start(). Specifically, add coverage for lines 35 to 43. 2. Before commiting changes to Git, pause to let me review your work. 3. After I approve your work, commit the changes to git.
 
 - I will perform the test myself, pause now to wait for my code approval of your code. mark 2nd TODO item as complete. update @PROMPTS.md
+
+- I'm noticed a bug in the app when I interact with the BPM textfield if the sequencer is running: the app will hang. I believe there is an issue with how the textfield is updating state.bpm. 1. Write a plan to diagnose this issue with tests first to confirm there is a glitch/slowdown if the app is running and the textfield is interacted with. Use timestamps to confirm the app hangs and does not immediately let the user input a new BPM. 2. Devise a plan to fix this issue.
